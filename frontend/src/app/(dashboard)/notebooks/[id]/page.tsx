@@ -105,8 +105,8 @@ export default function NotebookPage() {
     return (
       <AppShell>
         <div className="p-6">
-          <h1 className="text-2xl font-bold mb-4">Notebook Not Found</h1>
-          <p className="text-muted-foreground">The requested notebook could not be found.</p>
+          <h1 className="text-2xl font-bold mb-4">ノートブックが見つかりません</h1>
+          <p className="text-muted-foreground">指定されたノートブックは存在しません。</p>
         </div>
       </AppShell>
     )
@@ -128,15 +128,15 @@ export default function NotebookPage() {
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="sources" className="gap-2">
                       <FileText className="h-4 w-4" />
-                      Sources
+                      ソース
                     </TabsTrigger>
                     <TabsTrigger value="notes" className="gap-2">
                       <StickyNote className="h-4 w-4" />
-                      Notes
+                      ノート
                     </TabsTrigger>
                     <TabsTrigger value="chat" className="gap-2">
                       <MessageSquare className="h-4 w-4" />
-                      Chat
+                      チャット
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>

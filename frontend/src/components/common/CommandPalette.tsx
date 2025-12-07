@@ -31,26 +31,26 @@ import {
 } from 'lucide-react'
 
 const navigationItems = [
-  { name: 'Sources', href: '/sources', icon: FileText, keywords: ['files', 'documents', 'upload'] },
-  { name: 'Notebooks', href: '/notebooks', icon: Book, keywords: ['notes', 'research', 'projects'] },
-  { name: 'Ask and Search', href: '/search', icon: Search, keywords: ['find', 'query'] },
-  { name: 'Podcasts', href: '/podcasts', icon: Mic, keywords: ['audio', 'episodes', 'generate'] },
-  { name: 'Models', href: '/models', icon: Bot, keywords: ['ai', 'llm', 'providers', 'openai', 'anthropic'] },
-  { name: 'Transformations', href: '/transformations', icon: Shuffle, keywords: ['prompts', 'templates', 'actions'] },
-  { name: 'Settings', href: '/settings', icon: Settings, keywords: ['preferences', 'config', 'options'] },
-  { name: 'Advanced', href: '/advanced', icon: Wrench, keywords: ['debug', 'system', 'tools'] },
+  { name: 'ソース', href: '/sources', icon: FileText, keywords: ['files', 'documents', 'upload', 'ソース', '情報源'] },
+  { name: 'ノートブック', href: '/notebooks', icon: Book, keywords: ['notes', 'research', 'projects', 'ノート', 'ノートブック'] },
+  { name: '質問・検索', href: '/search', icon: Search, keywords: ['find', 'query', '検索', '質問'] },
+  { name: 'ポッドキャスト', href: '/podcasts', icon: Mic, keywords: ['audio', 'episodes', 'generate', '音声'] },
+  { name: 'モデル', href: '/models', icon: Bot, keywords: ['ai', 'llm', 'providers', 'openai', 'anthropic', 'モデル'] },
+  { name: '変換テンプレート', href: '/transformations', icon: Shuffle, keywords: ['prompts', 'templates', 'actions', '変換'] },
+  { name: '設定', href: '/settings', icon: Settings, keywords: ['preferences', 'config', 'options', '設定'] },
+  { name: '詳細設定', href: '/advanced', icon: Wrench, keywords: ['debug', 'system', 'tools', '高度'] },
 ]
 
 const createItems = [
-  { name: 'Create Source', action: 'source', icon: FileText },
-  { name: 'Create Notebook', action: 'notebook', icon: Book },
-  { name: 'Create Podcast', action: 'podcast', icon: Mic },
+  { name: 'ソースを作成', action: 'source', icon: FileText },
+  { name: 'ノートブックを作成', action: 'notebook', icon: Book },
+  { name: 'ポッドキャストを作成', action: 'podcast', icon: Mic },
 ]
 
 const themeItems = [
-  { name: 'Light Theme', value: 'light' as const, icon: Sun, keywords: ['bright', 'day'] },
-  { name: 'Dark Theme', value: 'dark' as const, icon: Moon, keywords: ['night'] },
-  { name: 'System Theme', value: 'system' as const, icon: Monitor, keywords: ['auto', 'default'] },
+  { name: 'ライトテーマ', value: 'light' as const, icon: Sun, keywords: ['bright', 'day', 'ライト'] },
+  { name: 'ダークテーマ', value: 'dark' as const, icon: Moon, keywords: ['night', 'ダーク'] },
+  { name: 'システム設定に合わせる', value: 'system' as const, icon: Monitor, keywords: ['auto', 'default', 'システム'] },
 ]
 
 export function CommandPalette() {
@@ -156,26 +156,26 @@ export function CommandPalette() {
     <CommandDialog
       open={open}
       onOpenChange={setOpen}
-      title="Command Palette"
-      description="Navigate, search, or ask your knowledge base"
+      title="コマンドパレット"
+      description="移動・検索・質問・作成をまとめて実行"
       className="sm:max-w-lg"
     >
       <CommandInput
-        placeholder="Type a command or search..."
+        placeholder="コマンドやキーワードを入力..."
         value={query}
         onValueChange={setQuery}
       />
       <CommandList>
         {/* Search/Ask - show FIRST when there's a query with no command match */}
         {showSearchFirst && (
-          <CommandGroup heading="Search & Ask" forceMount>
+          <CommandGroup heading="検索・質問" forceMount>
             <CommandItem
               value={`__search__ ${query}`}
               onSelect={handleSearch}
               forceMount
             >
               <Search className="h-4 w-4" />
-              <span>Search for &ldquo;{query}&rdquo;</span>
+              <span>&ldquo;{query}&rdquo; を検索</span>
             </CommandItem>
             <CommandItem
               value={`__ask__ ${query}`}
@@ -183,13 +183,13 @@ export function CommandPalette() {
               forceMount
             >
               <MessageCircleQuestion className="h-4 w-4" />
-              <span>Ask about &ldquo;{query}&rdquo;</span>
+              <span>&ldquo;{query}&rdquo; について質問</span>
             </CommandItem>
           </CommandGroup>
         )}
 
         {/* Navigation */}
-        <CommandGroup heading="Navigation">
+        <CommandGroup heading="ナビゲーション">
           {navigationItems.map((item) => (
             <CommandItem
               key={item.href}
@@ -203,11 +203,11 @@ export function CommandPalette() {
         </CommandGroup>
 
         {/* Notebooks */}
-        <CommandGroup heading="Notebooks">
+        <CommandGroup heading="ノートブック">
           {notebooksLoading ? (
             <CommandItem disabled>
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Loading notebooks...</span>
+              <span>ノートブックを読み込み中...</span>
             </CommandItem>
           ) : notebooks && notebooks.length > 0 ? (
             notebooks.map((notebook) => (
@@ -224,7 +224,7 @@ export function CommandPalette() {
         </CommandGroup>
 
         {/* Create */}
-        <CommandGroup heading="Create">
+        <CommandGroup heading="作成">
           {createItems.map((item) => (
             <CommandItem
               key={item.action}
@@ -238,7 +238,7 @@ export function CommandPalette() {
         </CommandGroup>
 
         {/* Theme */}
-        <CommandGroup heading="Theme">
+        <CommandGroup heading="テーマ">
           {themeItems.map((item) => (
             <CommandItem
               key={item.value}
@@ -255,14 +255,14 @@ export function CommandPalette() {
         {query.trim() && hasCommandMatch && (
           <>
             <CommandSeparator />
-            <CommandGroup heading="Or search your knowledge base" forceMount>
+            <CommandGroup heading="ナレッジベースを検索・質問" forceMount>
               <CommandItem
                 value={`__search__ ${query}`}
                 onSelect={handleSearch}
                 forceMount
               >
                 <Search className="h-4 w-4" />
-                <span>Search for &ldquo;{query}&rdquo;</span>
+                <span>&ldquo;{query}&rdquo; を検索</span>
               </CommandItem>
               <CommandItem
                 value={`__ask__ ${query}`}
@@ -270,7 +270,7 @@ export function CommandPalette() {
                 forceMount
               >
                 <MessageCircleQuestion className="h-4 w-4" />
-                <span>Ask about &ldquo;{query}&rdquo;</span>
+                <span>&ldquo;{query}&rdquo; について質問</span>
               </CommandItem>
             </CommandGroup>
           </>

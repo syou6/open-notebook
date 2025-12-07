@@ -57,44 +57,44 @@ export function AdvancedModelsDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Advanced Model Selection</DialogTitle>
+          <DialogTitle>モデルの詳細設定</DialogTitle>
           <DialogDescription>
-            Choose specific models for each stage of the Ask process
+            質問フローの各ステップで使用するモデルを選択します
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <ModelSelector
-            label="Strategy Model"
+            label="戦略モデル"
             modelType="language"
             value={strategyModel}
             onChange={setStrategyModel}
-            placeholder="Select strategy model"
+            placeholder="戦略に使うモデルを選択"
           />
 
           <ModelSelector
-            label="Answer Model"
+            label="回答モデル"
             modelType="language"
             value={answerModel}
             onChange={setAnswerModel}
-            placeholder="Select answer model"
+            placeholder="回答に使うモデルを選択"
           />
 
           <ModelSelector
-            label="Final Answer Model"
+            label="最終回答モデル"
             modelType="language"
             value={finalAnswerModel}
             onChange={setFinalAnswerModel}
-            placeholder="Select final answer model"
+            placeholder="最終回答に使うモデルを選択"
           />
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            キャンセル
           </Button>
           <Button onClick={handleSave}>
-            Save Changes
+            保存
           </Button>
         </DialogFooter>
       </DialogContent>

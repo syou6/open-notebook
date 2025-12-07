@@ -10,6 +10,7 @@ import { AppShell } from '@/components/layout/AppShell'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 import { FileText, Link as LinkIcon, Upload, AlignLeft, Trash2, ArrowUpDown } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { ja } from 'date-fns/locale'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -71,8 +72,8 @@ export default function SourcesPage() {
       offsetRef.current += data.length
     } catch (err) {
       console.error('Failed to fetch sources:', err)
-      setError('Failed to load sources')
-      toast.error('Failed to load sources')
+      setError('ソースの読み込みに失敗しました')
+      toast.error('ソースの読み込みに失敗しました')
     } finally {
       setLoading(false)
       setLoadingMore(false)
@@ -216,9 +217,9 @@ export default function SourcesPage() {
   }
 
   const getSourceType = (source: SourceListResponse) => {
-    if (source.asset?.url) return 'Link'
-    if (source.asset?.file_path) return 'File'
-    return 'Text'
+    if (source.asset?.url) return 'リンク'
+    if (source.asset?.file_path) return 'ファイル'
+    return 'テキスト'
   }
 
   const handleRowClick = useCallback((index: number, sourceId: string) => {
@@ -236,13 +237,13 @@ export default function SourcesPage() {
 
     try {
       await sourcesApi.delete(deleteDialog.source.id)
-      toast.success('Source deleted successfully')
+      toast.success('ソースを削除しました')
       // Remove the deleted source from the list
       setSources(prev => prev.filter(s => s.id !== deleteDialog.source?.id))
       setDeleteDialog({ open: false, source: null })
     } catch (err) {
       console.error('Failed to delete source:', err)
-      toast.error('Failed to delete source')
+      toast.error('ソースの削除に失敗しました')
     }
   }
 
@@ -271,8 +272,8 @@ export default function SourcesPage() {
       <AppShell>
         <EmptyState
           icon={FileText}
-          title="No sources yet"
-          description="Sources from all notebooks will appear here"
+          title="ソースがまだありません"
+          description="すべてのノートブックのソースがここに表示されます"
         />
       </AppShell>
     )
@@ -282,9 +283,9 @@ export default function SourcesPage() {
     <AppShell>
       <div className="flex flex-col h-full w-full max-w-none px-6 py-6">
         <div className="mb-6 flex-shrink-0">
-          <h1 className="text-3xl font-bold">All Sources</h1>
+          <h1 className="text-3xl font-bold">すべてのソース</h1>
           <p className="mt-2 text-muted-foreground">
-            Browse all sources across your notebooks. Use arrow keys to navigate and Enter to open.
+            ノートブック横断でソースを一覧できます。矢印キーで移動し、Enter で開きます。
           </p>
         </div>
 
@@ -305,10 +306,10 @@ export default function SourcesPage() {
             <thead className="sticky top-0 bg-background z-10">
               <tr className="border-b bg-muted/50">
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Type
+                  種類
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Title
+                  タイトル
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden sm:table-cell">
                   <Button
@@ -317,7 +318,7 @@ export default function SourcesPage() {
                     onClick={() => toggleSort('created')}
                     className="h-8 px-2 hover:bg-muted"
                   >
-                    Created
+                    作成日時
                     <ArrowUpDown className={cn(
                       "ml-2 h-3 w-3",
                       sortBy === 'created' ? 'opacity-100' : 'opacity-30'
@@ -330,13 +331,13 @@ export default function SourcesPage() {
                   </Button>
                 </th>
                 <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground hidden md:table-cell">
-                  Insights
+                  インサイト
                 </th>
                 <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground hidden lg:table-cell">
-                  Embedded
+                  埋め込み
                 </th>
                 <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">
-                  Actions
+                  操作
                 </th>
               </tr>
             </thead>
@@ -364,7 +365,7 @@ export default function SourcesPage() {
                   <td className="h-12 px-4">
                     <div className="flex flex-col overflow-hidden">
                       <span className="font-medium truncate">
-                        {source.title || 'Untitled Source'}
+                        {source.title || '名称未設定のソース'}
                       </span>
                       {source.asset?.url && (
                         <span className="text-xs text-muted-foreground truncate">
@@ -374,14 +375,14 @@ export default function SourcesPage() {
                     </div>
                   </td>
                   <td className="h-12 px-4 text-muted-foreground text-sm hidden sm:table-cell">
-                    {formatDistanceToNow(new Date(source.created), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(source.created), { addSuffix: true, locale: ja })}
                   </td>
                   <td className="h-12 px-4 text-center hidden md:table-cell">
                     <span className="text-sm font-medium">{source.insights_count || 0}</span>
                   </td>
                   <td className="h-12 px-4 text-center hidden lg:table-cell">
                     <Badge variant={source.embedded ? "default" : "secondary"} className="text-xs">
-                      {source.embedded ? "Yes" : "No"}
+                      {source.embedded ? "あり" : "なし"}
                     </Badge>
                   </td>
                   <td className="h-12 px-4 text-right">
@@ -401,7 +402,7 @@ export default function SourcesPage() {
                   <td colSpan={6} className="h-16 text-center">
                     <div className="flex items-center justify-center">
                       <LoadingSpinner />
-                      <span className="ml-2 text-muted-foreground">Loading more sources...</span>
+                      <span className="ml-2 text-muted-foreground">さらに読み込み中...</span>
                     </div>
                   </td>
                 </tr>
@@ -414,9 +415,9 @@ export default function SourcesPage() {
       <ConfirmDialog
         open={deleteDialog.open}
         onOpenChange={(open) => setDeleteDialog({ open, source: deleteDialog.source })}
-        title="Delete Source"
-        description={`Are you sure you want to delete "${deleteDialog.source?.title || 'this source'}"? This action cannot be undone.`}
-        confirmText="Delete"
+        title="ソースを削除"
+        description={`"${deleteDialog.source?.title || 'このソース'}" を削除しますか？この操作は取り消せません。`}
+        confirmText="削除"
         confirmVariant="destructive"
         onConfirm={handleDeleteConfirm}
       />

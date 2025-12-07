@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { MoreHorizontal, Archive, ArchiveRestore, Trash2, FileText, StickyNote } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { ja } from 'date-fns/locale'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,7 +60,7 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
                 </CardTitle>
                 {notebook.archived && (
                   <Badge variant="secondary" className="mt-1">
-                    Archived
+                    アーカイブ
                   </Badge>
                 )}
               </div>
@@ -80,12 +81,12 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
                     {notebook.archived ? (
                       <>
                         <ArchiveRestore className="h-4 w-4 mr-2" />
-                        Unarchive
+                        アーカイブ解除
                       </>
                     ) : (
                       <>
                         <Archive className="h-4 w-4 mr-2" />
-                        Archive
+                        アーカイブ
                       </>
                     )}
                   </DropdownMenuItem>
@@ -97,7 +98,7 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
                     className="text-red-600"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
+                    削除
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -106,11 +107,11 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
           
           <CardContent>
             <CardDescription className="line-clamp-2 text-sm">
-              {notebook.description || 'No description'}
+              {notebook.description || '説明なし'}
             </CardDescription>
 
             <div className="mt-3 text-xs text-muted-foreground">
-              Updated {formatDistanceToNow(new Date(notebook.updated), { addSuffix: true })}
+              最終更新 {formatDistanceToNow(new Date(notebook.updated), { addSuffix: true, locale: ja })}
             </div>
 
             {/* Item counts footer */}
@@ -130,9 +131,9 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
       <ConfirmDialog
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
-        title="Delete Notebook"
-        description={`Are you sure you want to delete "${notebook.name}"? This action cannot be undone and will delete all sources, notes, and chat sessions.`}
-        confirmText="Delete"
+        title="ノートブックを削除"
+        description={`"${notebook.name}" を削除しますか？この操作は取り消せず、関連するソース・ノート・チャット履歴も削除されます。`}
+        confirmText="削除"
         confirmVariant="destructive"
         onConfirm={handleDelete}
       />

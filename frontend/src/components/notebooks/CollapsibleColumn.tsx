@@ -37,7 +37,7 @@ export function CollapsibleColumn({
                 'cursor-pointer group',
                 'py-6'
               )}
-              aria-label={`Expand ${collapsedLabel}`}
+              aria-label={`${collapsedLabel} を展開`}
             >
               <CollapsedIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
               <div
@@ -49,7 +49,7 @@ export function CollapsibleColumn({
             </button>
           </TooltipTrigger>
           <TooltipContent side="right">
-            <p>Expand {collapsedLabel}</p>
+            <p>{collapsedLabel} を展開</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -84,7 +84,7 @@ export function createCollapseButton(onToggle: () => void, label: string) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Collapse {label}</p>
+            <p>{label} を折りたたむ</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

@@ -14,7 +14,7 @@ import { InlineEdit } from '@/components/common/InlineEdit'
 
 const createNoteSchema = z.object({
   title: z.string().optional(),
-  content: z.string().min(1, 'Content is required'),
+  content: z.string().min(1, '内容は必須です'),
 })
 
 type CreateNoteFormData = z.infer<typeof createNoteSchema>
@@ -106,12 +106,12 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-3xl w-full max-h-[90vh] overflow-hidden p-0">
         <DialogTitle className="sr-only">
-          {isEditing ? 'Edit note' : 'Create note'}
+          {isEditing ? 'ノートを編集' : 'ノートを作成'}
         </DialogTitle>
         <form onSubmit={handleSubmit(onSubmit)} className="flex h-full flex-col">
           {isEditing && noteLoading ? (
             <div className="flex-1 flex items-center justify-center py-10">
-              <span className="text-sm text-muted-foreground">Loading note…</span>
+              <span className="text-sm text-muted-foreground">ノートを読み込み中...</span>
             </div>
           ) : (
             <>
@@ -119,8 +119,8 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
                 <InlineEdit
                   value={watchTitle ?? ''}
                   onSave={(value) => setValue('title', value || '')}
-                  placeholder="Add a title..."
-                  emptyText="Untitled Note"
+                  placeholder="タイトルを追加..."
+                  emptyText="無題のノート"
                   className="text-xl font-semibold"
                   inputClassName="text-xl font-semibold"
                 />
@@ -136,7 +136,7 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
                       value={field.value}
                       onChange={field.onChange}
                       height={420}
-                      placeholder="Write your note content here..."
+                      placeholder="ノートの内容を入力..."
                       className="rounded-md border"
                     />
                   )}
@@ -150,17 +150,17 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
 
           <div className="border-t px-6 py-4 flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={handleClose}>
-              Cancel
+              キャンセル
             </Button>
             <Button 
               type="submit" 
               disabled={isSaving || (isEditing && noteLoading)}
             >
               {isSaving
-                ? isEditing ? 'Saving...' : 'Creating...'
+                ? isEditing ? '保存中...' : '作成中...'
                 : isEditing
-                  ? 'Save Note'
-                  : 'Create Note'}
+                  ? 'ノートを保存'
+                  : 'ノートを作成'}
             </Button>
           </div>
         </form>

@@ -65,21 +65,21 @@ export function parseAndValidateUrls(text: string): {
 const SOURCE_TYPES = [
   {
     value: 'link' as const,
-    label: 'Link',
+    label: 'リンク',
     icon: LinkIcon,
-    description: 'Add a web page or URL',
+    description: 'Web ページや URL を追加',
   },
   {
     value: 'upload' as const,
-    label: 'Upload',
+    label: 'アップロード',
     icon: FileIcon,
-    description: 'Upload a document or file',
+    description: 'ドキュメントやファイルをアップロード',
   },
   {
     value: 'text' as const,
-    label: 'Text',
+    label: 'テキスト',
     icon: FileTextIcon,
-    description: 'Add text content directly',
+    description: 'テキストを直接入力',
   },
 ]
 
@@ -125,8 +125,8 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
   return (
     <div className="space-y-6">
       <FormSection
-        title="Source Type"
-        description="Choose how you want to add your content"
+        title="ソースの種類"
+        description="コンテンツの追加方法を選択してください"
       >
         <Controller
           control={control}
@@ -157,11 +157,11 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
                   {type.value === 'link' && (
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <Label htmlFor="url">URL(s) *</Label>
+                        <Label htmlFor="url">URL *</Label>
                         {urlCount > 0 && (
                           <Badge variant={isOverLimit ? "destructive" : "secondary"}>
-                            {urlCount} URL{urlCount !== 1 ? 's' : ''}
-                            {isOverLimit && ` (max ${MAX_BATCH_SIZE})`}
+                            {urlCount} 件のURL
+                            {isOverLimit && ` (最大 ${MAX_BATCH_SIZE} 件)`}
                           </Badge>
                         )}
                       </div>
@@ -170,12 +170,12 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
                         {...register('url', {
                           onChange: () => onClearUrlErrors?.()
                         })}
-                        placeholder="Enter URLs, one per line&#10;https://example.com/article1&#10;https://example.com/article2"
+                        placeholder="1 行に 1 件の URL を入力&#10;https://example.com/article1&#10;https://example.com/article2"
                         rows={urlCount > 1 ? 6 : 2}
                         className="font-mono text-sm"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Paste multiple URLs (one per line) to batch import
+                        複数の URL を貼り付けると一括取り込みできます（1 行 1 件）
                       </p>
                       {errors.url && (
                         <p className="text-sm text-destructive mt-1">{errors.url.message}</p>
@@ -183,20 +183,20 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
                       {urlValidationErrors && urlValidationErrors.length > 0 && (
                         <div className="mt-2 p-3 bg-destructive/10 rounded-md border border-destructive/20">
                           <p className="text-sm font-medium text-destructive mb-2">
-                            Invalid URLs detected:
+                            無効な URL が見つかりました:
                           </p>
                           <ul className="space-y-1">
                             {urlValidationErrors.map((error, idx) => (
                               <li key={idx} className="text-xs text-destructive flex items-start gap-2">
                                 <span className="font-mono bg-destructive/20 px-1 rounded">
-                                  Line {error.line}
+                                  {error.line} 行目
                                 </span>
                                 <span className="truncate">{error.url}</span>
                               </li>
                             ))}
                           </ul>
                           <p className="text-xs text-muted-foreground mt-2">
-                            Please fix or remove invalid URLs to continue
+                            無効な URL を修正または削除してください
                           </p>
                         </div>
                       )}
@@ -206,12 +206,12 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
                   {type.value === 'upload' && (
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <Label htmlFor="file">File(s) *</Label>
+                        <Label htmlFor="file">ファイル *</Label>
                         {fileCount > 0 && (
                           <Badge variant={isOverLimit ? "destructive" : "secondary"}>
-                            {fileCount} file{fileCount !== 1 ? 's' : ''}
-                            {isOverLimit && ` (max ${MAX_BATCH_SIZE})`}
-                          </Badge>
+                          {fileCount} 件のファイル
+                          {isOverLimit && ` (最大 ${MAX_BATCH_SIZE} 件)`}
+                        </Badge>
                         )}
                       </div>
                       <Input
@@ -222,11 +222,11 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
                         accept=".pdf,.doc,.docx,.pptx,.ppt,.xlsx,.xls,.txt,.md,.epub,.mp4,.avi,.mov,.wmv,.mp3,.wav,.m4a,.aac,.jpg,.jpeg,.png,.tiff,.zip,.tar,.gz,.html"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Select multiple files to batch import. Supported: Documents (PDF, DOC, DOCX, PPT, XLS, EPUB, TXT, MD), Media (MP4, MP3, WAV, M4A), Images (JPG, PNG), Archives (ZIP)
+                        複数ファイルを選択すると一括取り込みできます。対応形式: ドキュメント (PDF, DOC, DOCX, PPT, XLS, EPUB, TXT, MD)、メディア (MP4, MP3, WAV, M4A)、画像 (JPG, PNG)、アーカイブ (ZIP など)
                       </p>
                       {fileCount > 1 && fileInput instanceof FileList && (
                         <div className="mt-2 p-3 bg-muted rounded-md">
-                          <p className="text-xs font-medium mb-2">Selected files:</p>
+                          <p className="text-xs font-medium mb-2">選択したファイル:</p>
                           <ul className="space-y-1 max-h-32 overflow-y-auto">
                             {Array.from(fileInput).map((file, idx) => (
                               <li key={idx} className="text-xs text-muted-foreground flex items-center gap-2">
@@ -245,7 +245,7 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
                       )}
                       {isOverLimit && selectedType === 'upload' && (
                         <p className="text-sm text-destructive mt-1">
-                          Maximum {MAX_BATCH_SIZE} files allowed per batch
+                          1 回の処理で選択できるのは最大 {MAX_BATCH_SIZE} 件です
                         </p>
                       )}
                     </div>
@@ -253,11 +253,11 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
                   
                   {type.value === 'text' && (
                     <div>
-                      <Label htmlFor="content" className="mb-2 block">Text Content *</Label>
+                      <Label htmlFor="content" className="mb-2 block">テキスト内容 *</Label>
                       <Textarea
                         id="content"
                         {...register('content')}
-                        placeholder="Paste or type your content here..."
+                        placeholder="ここにテキストを入力または貼り付けてください..."
                         rows={6}
                       />
                       {errors.content && (
@@ -278,16 +278,16 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
       {/* Hide title field in batch mode - titles will be auto-generated */}
       {!isBatchMode && (
         <FormSection
-          title={selectedType === 'text' ? "Title *" : "Title (optional)"}
+          title={selectedType === 'text' ? "タイトル *" : "タイトル (任意)"}
           description={selectedType === 'text'
-            ? "A title is required for text content"
-            : "If left empty, a title will be generated from the content"
+            ? "テキストコンテンツにはタイトルが必須です"
+            : "未入力の場合、内容からタイトルが生成されます"
           }
         >
           <Input
             id="title"
             {...register('title')}
-            placeholder="Give your source a descriptive title"
+            placeholder="ソースの内容が分かるタイトル"
           />
           {errors.title && (
             <p className="text-sm text-destructive mt-1">{errors.title.message}</p>
@@ -299,14 +299,13 @@ export function SourceTypeStep({ control, register, errors, urlValidationErrors,
       {isBatchMode && (
         <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="default">Batch Mode</Badge>
+            <Badge variant="default">バッチモード</Badge>
             <span className="text-sm font-medium">
-              {itemCount} {selectedType === 'link' ? 'URLs' : 'files'} will be processed
+              {itemCount} 件の{selectedType === 'link' ? 'URL' : 'ファイル'}を処理します
             </span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Titles will be automatically generated for each source.
-            The same notebooks and transformations will be applied to all items.
+            タイトルは自動生成され、同じノートブックと変換設定がすべてに適用されます。
           </p>
         </div>
       )}

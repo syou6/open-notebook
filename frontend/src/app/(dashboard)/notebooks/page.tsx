@@ -51,7 +51,7 @@ export default function NotebooksPage() {
         <div className="p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold">Notebooks</h1>
+            <h1 className="text-2xl font-bold">ノートブック</h1>
             <Button variant="outline" size="sm" onClick={() => refetch()}>
               <RefreshCw className="h-4 w-4" />
             </Button>
@@ -60,12 +60,12 @@ export default function NotebooksPage() {
             <Input
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search notebooks..."
+              placeholder="ノートブックを検索..."
               className="w-full sm:w-64"
             />
             <Button onClick={() => setCreateDialogOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              New Notebook
+              新規ノートブック
             </Button>
           </div>
         </div>
@@ -74,19 +74,19 @@ export default function NotebooksPage() {
           <NotebookList 
             notebooks={filteredActive} 
             isLoading={isLoading}
-            title="Active Notebooks"
-            emptyTitle={isSearching ? 'No notebooks match your search' : undefined}
-            emptyDescription={isSearching ? 'Try using a different notebook name.' : undefined}
+            title="アクティブなノートブック"
+            emptyTitle={isSearching ? '検索条件に一致するノートブックがありません' : undefined}
+            emptyDescription={isSearching ? '別の名前で検索してみてください。' : undefined}
           />
           
           {hasArchived && (
             <NotebookList 
               notebooks={filteredArchived} 
               isLoading={false}
-              title="Archived Notebooks"
+              title="アーカイブ済みノートブック"
               collapsible
-              emptyTitle={isSearching ? 'No archived notebooks match your search' : undefined}
-              emptyDescription={isSearching ? 'Modify your search to find archived notebooks.' : undefined}
+              emptyTitle={isSearching ? '検索条件に一致するアーカイブ済みノートブックがありません' : undefined}
+              emptyDescription={isSearching ? '検索キーワードを変更してください。' : undefined}
             />
           )}
         </div>

@@ -38,7 +38,7 @@ export function ContextIndicator({
   if (!hasContext) {
     return (
       <div className={cn('flex-shrink-0 text-xs text-muted-foreground py-2 px-3 border-t', className)}>
-        No sources or notes included in context. Toggle icons on cards to include them.
+        コンテキストにソースやノートが含まれていません。カードのアイコンを切り替えて追加してください。
       </div>
     )
   }
@@ -46,7 +46,7 @@ export function ContextIndicator({
   return (
     <div className={cn('flex-shrink-0 flex items-center justify-between gap-2 py-2 px-3 border-t bg-muted/30', className)}>
       <div className="flex items-center gap-2">
-        <span className="text-xs font-medium text-muted-foreground">Context:</span>
+        <span className="text-xs font-medium text-muted-foreground">コンテキスト:</span>
 
         <div className="flex items-center gap-1.5">
           {sourcesInsights > 0 && (
@@ -58,7 +58,7 @@ export function ContextIndicator({
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Insights for {sourcesInsights} source{sourcesInsights !== 1 ? 's' : ''}</p>
+                <p>{sourcesInsights} 件のソースのインサイト</p>
               </TooltipContent>
             </Tooltip>
           )}
@@ -72,7 +72,7 @@ export function ContextIndicator({
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{sourcesFull} full source{sourcesFull !== 1 ? 's' : ''}</p>
+                <p>{sourcesFull} 件のソース全文</p>
               </TooltipContent>
             </Tooltip>
           )}
@@ -91,7 +91,7 @@ export function ContextIndicator({
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{notesCount} full note{notesCount !== 1 ? 's' : ''}</p>
+                <p>{notesCount} 件のノート全文</p>
               </TooltipContent>
             </Tooltip>
           </>
@@ -101,13 +101,13 @@ export function ContextIndicator({
       {(tokenCount !== undefined || charCount !== undefined) && (
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           {tokenCount !== undefined && tokenCount > 0 && (
-            <span>{formatNumber(tokenCount)} tokens</span>
+            <span>{formatNumber(tokenCount)} トークン</span>
           )}
           {tokenCount !== undefined && charCount !== undefined && tokenCount > 0 && charCount > 0 && (
             <span>/</span>
           )}
           {charCount !== undefined && charCount > 0 && (
-            <span>{formatNumber(charCount)} chars</span>
+            <span>{formatNumber(charCount)} 文字</span>
           )}
         </div>
       )}

@@ -55,15 +55,15 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               <div className="mx-auto w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center mb-4">
                 <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
               </div>
-              <CardTitle className="text-red-900 dark:text-red-100">Something went wrong</CardTitle>
+              <CardTitle className="text-red-900 dark:text-red-100">問題が発生しました</CardTitle>
               <CardDescription>
-                An unexpected error occurred. Please try refreshing the page.
+                予期しないエラーが発生しました。ページを再読み込みしてください。
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {process.env.NODE_ENV === 'development' && this.state.error && (
                 <details className="text-xs bg-muted p-3 rounded border">
-                  <summary className="cursor-pointer font-medium">Error Details</summary>
+                  <summary className="cursor-pointer font-medium">エラー詳細</summary>
                   <pre className="mt-2 whitespace-pre-wrap break-all">
                     {this.state.error.toString()}
                   </pre>
@@ -75,13 +75,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
                 variant="outline"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Try Again
+                やり直す
               </Button>
               <Button 
                 onClick={() => window.location.reload()} 
                 className="w-full"
               >
-                Refresh Page
+                ページを再読み込み
               </Button>
             </CardContent>
           </Card>

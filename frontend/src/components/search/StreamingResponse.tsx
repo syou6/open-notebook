@@ -42,8 +42,8 @@ export function StreamingResponse({
       // The modal component itself will handle displaying "not found" states.
       // This try-catch is here for future enhancements or unexpected errors.
     } catch {
-      const typeLabel = type === 'source_insight' ? 'insight' : type
-      toast.error(`This ${typeLabel} could not be found`)
+      const typeLabel = type === 'source_insight' ? 'インサイト' : type
+      toast.error(`${typeLabel} を見つけられませんでした`)
     }
   }
 
@@ -55,7 +55,7 @@ export function StreamingResponse({
     <div
       className="space-y-4 mt-6 max-h-[60vh] overflow-y-auto pr-2"
       role="region"
-      aria-label="Ask response"
+      aria-label="質問の回答"
       aria-live="polite"
       aria-busy={isStreaming}
     >
@@ -67,7 +67,7 @@ export function StreamingResponse({
               <CollapsibleTrigger className="flex items-center justify-between w-full hover:opacity-80">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-primary" />
-                  Strategy
+                  ストラテジー
                 </CardTitle>
                 <ChevronDown className={`h-4 w-4 transition-transform ${strategyOpen ? 'rotate-180' : ''}`} />
               </CollapsibleTrigger>
@@ -75,12 +75,12 @@ export function StreamingResponse({
             <CollapsibleContent>
               <CardContent className="space-y-3 pt-0">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">Reasoning:</p>
+                  <p className="text-sm text-muted-foreground mb-2">推論:</p>
                   <p className="text-sm">{strategy.reasoning}</p>
                 </div>
                 {strategy.searches.length > 0 && (
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Search Terms:</p>
+                    <p className="text-sm text-muted-foreground mb-2">検索語:</p>
                     <div className="space-y-2">
                       {strategy.searches.map((search, i) => (
                         <div key={i} className="flex items-start gap-2">
@@ -108,7 +108,7 @@ export function StreamingResponse({
               <CollapsibleTrigger className="flex items-center justify-between w-full hover:opacity-80">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 text-primary" />
-                  Individual Answers ({answers.length})
+                  個別の回答 ({answers.length})
                 </CardTitle>
                 <ChevronDown className={`h-4 w-4 transition-transform ${answersOpen ? 'rotate-180' : ''}`} />
               </CollapsibleTrigger>
@@ -132,7 +132,7 @@ export function StreamingResponse({
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <CheckCircle className="h-4 w-4 text-primary" />
-              Final Answer
+              最終回答
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -148,7 +148,7 @@ export function StreamingResponse({
       {isStreaming && !finalAnswer && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <LoadingSpinner size="sm" />
-          <span>Processing your question...</span>
+          <span>質問を処理しています...</span>
         </div>
       )}
     </div>

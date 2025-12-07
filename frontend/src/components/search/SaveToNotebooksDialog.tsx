@@ -43,7 +43,7 @@ export function SaveToNotebooksDialog({
 
   const handleSave = async () => {
     if (selectedNotebooks.length === 0) {
-      toast.error('Please select at least one notebook')
+      toast.error('少なくとも1つノートブックを選択してください')
       return
     }
 
@@ -58,11 +58,11 @@ export function SaveToNotebooksDialog({
         })
       }
 
-      toast.success(`Answer saved to ${selectedNotebooks.length} notebook${selectedNotebooks.length > 1 ? 's' : ''}`)
+      toast.success(`回答を${selectedNotebooks.length}件のノートブックへ保存しました`)
       setSelectedNotebooks([])
       onOpenChange(false)
     } catch {
-      toast.error('Failed to save answer')
+      toast.error('回答の保存に失敗しました')
     }
   }
 
@@ -76,9 +76,9 @@ export function SaveToNotebooksDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Save to Notebooks</DialogTitle>
+          <DialogTitle>ノートブックへ保存</DialogTitle>
           <DialogDescription>
-            Select one or more notebooks to save this answer
+            回答を保存するノートブックを選択してください
           </DialogDescription>
         </DialogHeader>
 
@@ -92,14 +92,14 @@ export function SaveToNotebooksDialog({
               items={notebookItems}
               selectedIds={selectedNotebooks}
               onToggle={handleToggle}
-              emptyMessage="No notebooks found. Create a notebook first."
+              emptyMessage="ノートブックがありません。先に作成してください。"
             />
           )}
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            キャンセル
           </Button>
           <Button
             onClick={handleSave}
@@ -108,10 +108,12 @@ export function SaveToNotebooksDialog({
             {createNote.isPending ? (
               <>
                 <LoadingSpinner size="sm" className="mr-2" />
-                Saving...
+                保存中...
               </>
             ) : (
-              `Save to ${selectedNotebooks.length || ''} Notebook${selectedNotebooks.length !== 1 ? 's' : ''}`
+              (selectedNotebooks.length
+                ? `${selectedNotebooks.length}件のノートブックに保存`
+                : 'ノートブックに保存')
             )}
           </Button>
         </DialogFooter>

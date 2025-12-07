@@ -49,46 +49,52 @@ const SOURCE_TYPE_ICONS = {
   text: FileText,
 } as const
 
+const SOURCE_TYPE_LABELS = {
+  link: 'リンク',
+  upload: 'ファイル',
+  text: 'テキスト',
+} as const
+
 const STATUS_CONFIG = {
   new: {
     icon: Clock,
     color: 'text-blue-600',
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-200',
-    label: 'Processing',
-    description: 'Preparing to process'
+    label: '処理準備中',
+    description: '処理の準備中'
   },
   queued: {
     icon: Clock,
     color: 'text-blue-600',
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-200',
-    label: 'Queued',
-    description: 'Waiting to be processed'
+    label: '待機中',
+    description: '処理待ち'
   },
   running: {
     icon: Loader2,
     color: 'text-blue-600',
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-200',
-    label: 'Processing',
-    description: 'Being processed'
+    label: '処理中',
+    description: '処理を実行中'
   },
   completed: {
     icon: CheckCircle,
     color: 'text-green-600',
     bgColor: 'bg-green-50',
     borderColor: 'border-green-200',
-    label: 'Completed',
-    description: 'Successfully processed'
+    label: '完了',
+    description: '処理が完了しました'
   },
   failed: {
     icon: AlertTriangle,
     color: 'text-red-600',
     bgColor: 'bg-red-50',
     borderColor: 'border-red-200',
-    label: 'Failed',
-    description: 'Processing failed'
+    label: '失敗',
+    description: '処理に失敗しました'
   }
 } as const
 
@@ -167,8 +173,9 @@ export function SourceCard({
   const StatusIcon = statusConfig.icon
   const sourceType = getSourceType(source)
   const SourceTypeIcon = SOURCE_TYPE_ICONS[sourceType]
+  const sourceTypeLabel = SOURCE_TYPE_LABELS[sourceType]
   
-  const title = source.title || 'Untitled Source'
+  const title = source.title || '無題のソース'
 
   const handleRetry = () => {
     if (onRetry) {
@@ -222,13 +229,13 @@ export function SourceCard({
                     'h-3 w-3',
                     isProcessing && 'animate-spin'
                   )} />
-                  {statusLoading && shouldFetchStatus ? 'Checking...' : statusConfig.label}
+                  {statusLoading && shouldFetchStatus ? '確認中...' : statusConfig.label}
                 </div>
 
                 {/* Source type indicator */}
                 <div className="flex items-center gap-1 text-gray-500">
                   <SourceTypeIcon className="h-3 w-3" />
-                  <span className="text-xs capitalize">{sourceType}</span>
+                  <span className="text-xs capitalize">{sourceTypeLabel}</span>
                 </div>
               </div>
             )}
@@ -255,12 +262,12 @@ export function SourceCard({
               {/* Source type badge */}
               <Badge variant="secondary" className="text-xs flex items-center gap-1">
                 <SourceTypeIcon className="h-3 w-3" />
-                {sourceType}
+                {sourceTypeLabel}
               </Badge>
 
               {isCompleted && source.insights_count > 0 && (
                 <Badge variant="outline" className="text-xs">
-                  {source.insights_count} insights
+                  {source.insights_count} インサイト
                 </Badge>
               )}
               {source.topics && source.topics.length > 0 && isCompleted && (
@@ -314,7 +321,7 @@ export function SourceCard({
                     disabled={!onRemoveFromNotebook}
                   >
                     <Unlink className="h-4 w-4 mr-2" />
-                    Remove from Notebook
+                    ノートブックから外す
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
@@ -330,7 +337,7 @@ export function SourceCard({
                     disabled={!onRetry}
                   >
                     <RefreshCw className="h-4 w-4 mr-2" />
-                    Retry Processing
+                    再処理する
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
@@ -345,7 +352,7 @@ export function SourceCard({
                 className="text-red-600 focus:text-red-600"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Delete Source
+                ソースを削除
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -362,7 +369,7 @@ export function SourceCard({
               className="h-7 text-xs"
             >
               <RefreshCw className="h-3 w-3 mr-1" />
-              Retry
+              再試行
             </Button>
           </div>
         )}
@@ -371,7 +378,7 @@ export function SourceCard({
         {isProcessing && statusData?.processing_info?.progress && (
           <div className="mt-3 pt-2 border-t">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-xs text-gray-600">Progress</span>
+              <span className="text-xs text-gray-600">進捗</span>
               <span className="text-xs text-gray-600">
                 {Math.round(statusData.processing_info.progress as number)}%
               </span>

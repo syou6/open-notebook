@@ -39,8 +39,8 @@ export function NotebookList({
     return (
       <EmptyState
         icon={Book}
-        title={emptyTitle ?? `No ${title.toLowerCase()}`}
-        description={emptyDescription ?? 'Start by creating your first notebook to organize your research.'}
+        title={emptyTitle ?? `${title}はありません`}
+        description={emptyDescription ?? '最初のノートブックを作成してリサーチを整理しましょう。'}
       />
     )
   }

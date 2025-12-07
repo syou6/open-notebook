@@ -49,6 +49,7 @@ import {
   MessageSquare,
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { ja } from 'date-fns/locale'
 import { toast } from 'sonner'
 import { SourceInsightDialog } from '@/components/source/SourceInsightDialog'
 import { NotebookAssociations } from '@/components/source/NotebookAssociations'
@@ -94,7 +95,7 @@ export function SourceDetailContent({
       }
     } catch (err) {
       console.error('Failed to fetch source:', err)
-      setError('Failed to load source details')
+      setError('ソースの詳細を読み込めませんでした')
     } finally {
       setLoading(false)
     }
@@ -131,7 +132,7 @@ export function SourceDetailContent({
 
   const createInsight = async () => {
     if (!selectedTransformation) {
-      toast.error('Please select a transformation')
+      toast.error('変換を選択してください')
       return
     }
 
@@ -140,12 +141,12 @@ export function SourceDetailContent({
       await insightsApi.create(sourceId, {
         transformation_id: selectedTransformation
       })
-      toast.success('Insight created successfully')
+      toast.success('インサイトを作成しました')
       await fetchInsights()
       setSelectedTransformation('')
     } catch (err) {
       console.error('Failed to create insight:', err)
-      toast.error('Failed to create insight')
+      toast.error('インサイトの作成に失敗しました')
     } finally {
       setCreatingInsight(false)
     }
@@ -156,11 +157,11 @@ export function SourceDetailContent({
 
     try {
       await sourcesApi.update(sourceId, { title })
-      toast.success('Source title updated')
+      toast.success('タイトルを更新しました')
       setSource({ ...source, title })
     } catch (err) {
       console.error('Failed to update source title:', err)
-      toast.error('Failed to update source title')
+      toast.error('タイトルの更新に失敗しました')
       await fetchSource()
     }
   }
@@ -175,7 +176,7 @@ export function SourceDetailContent({
       await fetchSource()
     } catch (err) {
       console.error('Failed to embed content:', err)
-      toast.error('Failed to embed content')
+      toast.error('コンテンツの埋め込みに失敗しました')
     } finally {
       setIsEmbedding(false)
     }
@@ -227,14 +228,14 @@ export function SourceDetailContent({
       document.body.removeChild(link)
       window.URL.revokeObjectURL(blobUrl)
       setFileAvailable(true)
-      toast.success('Download started')
+      toast.success('ダウンロードを開始しました')
     } catch (err) {
       console.error('Failed to download file:', err)
       if (isAxiosError(err) && err.response?.status === 404) {
         setFileAvailable(false)
-        toast.error('Original file is no longer available on the server')
+        toast.error('元ファイルがサーバー上にありません')
       } else {
-        toast.error('Failed to download file')
+        toast.error('ファイルのダウンロードに失敗しました')
       }
     } finally {
       setIsDownloadingFile(false)
@@ -249,17 +250,17 @@ export function SourceDetailContent({
   }
 
   const getSourceType = () => {
-    if (!source) return 'unknown'
-    if (source.asset?.url) return 'link'
-    if (source.asset?.file_path) return 'file'
-    return 'text'
+    if (!source) return '不明'
+    if (source.asset?.url) return 'リンク'
+    if (source.asset?.file_path) return 'ファイル'
+    return 'テキスト'
   }
 
   const handleCopyUrl = useCallback(() => {
     if (source?.asset?.url) {
       navigator.clipboard.writeText(source.asset.url)
       setCopied(true)
-      toast.success('URL copied to clipboard')
+      toast.success('URL をコピーしました')
       setTimeout(() => setCopied(false), 2000)
     }
   }, [source])
@@ -296,14 +297,14 @@ export function SourceDetailContent({
   const handleDelete = async () => {
     if (!source) return
 
-    if (confirm('Are you sure you want to delete this source?')) {
+    if (confirm('このソースを削除しますか？')) {
       try {
         await sourcesApi.delete(source.id)
-        toast.success('Source deleted successfully')
+        toast.success('ソースを削除しました')
         onClose?.()
       } catch (error) {
         console.error('Failed to delete source:', error)
-        toast.error('Failed to delete source')
+        toast.error('ソースの削除に失敗しました')
       }
     }
   }
@@ -319,7 +320,7 @@ export function SourceDetailContent({
   if (error || !source) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
-        <p className="text-red-500">{error || 'Source not found'}</p>
+        <p className="text-red-500">{error || 'ソースが見つかりません'}</p>
       </div>
     )
   }
@@ -335,11 +336,11 @@ export function SourceDetailContent({
               onSave={handleUpdateTitle}
               className="text-2xl font-bold"
               inputClassName="text-2xl font-bold"
-              placeholder="Source title"
-              emptyText="Untitled Source"
+              placeholder="ソースのタイトル"
+              emptyText="無題のソース"
             />
             <p className="mt-1 text-sm text-muted-foreground">
-              Source ID: {source.id}
+              ソースID: {source.id}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -352,7 +353,7 @@ export function SourceDetailContent({
             {showChatButton && onChatClick && (
               <Button variant="outline" size="sm" onClick={onChatClick}>
                 <MessageSquare className="h-4 w-4 mr-2" />
-                Chat with source
+                このソースとチャット
               </Button>
             )}
 
@@ -371,10 +372,10 @@ export function SourceDetailContent({
                     >
                       <Download className="mr-2 h-4 w-4" />
                       {fileAvailable === false
-                        ? 'File unavailable'
+                        ? 'ファイルは利用できません'
                         : isDownloadingFile
-                          ? 'Preparing download…'
-                          : 'Download File'}
+                          ? 'ダウンロード準備中...'
+                          : 'ファイルをダウンロード'}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </>
@@ -384,7 +385,7 @@ export function SourceDetailContent({
                   disabled={isEmbedding || source.embedded}
                 >
                   <Database className="mr-2 h-4 w-4" />
-                  {isEmbedding ? 'Embedding...' : source.embedded ? 'Already Embedded' : 'Embed Content'}
+                  {isEmbedding ? '埋め込み中...' : source.embedded ? '埋め込み済み' : 'コンテンツを埋め込む'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -392,7 +393,7 @@ export function SourceDetailContent({
                   onClick={handleDelete}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Source
+                  ソースを削除
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -404,11 +405,11 @@ export function SourceDetailContent({
       <div className="flex-1 overflow-y-auto px-2">
         <Tabs defaultValue="content" className="w-full">
           <TabsList className="grid w-full grid-cols-3 sticky top-0 z-10">
-            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="content">コンテンツ</TabsTrigger>
             <TabsTrigger value="insights">
-              Insights {insights.length > 0 && `(${insights.length})`}
+              インサイト {insights.length > 0 && `(${insights.length})`}
             </TabsTrigger>
-            <TabsTrigger value="details">Details</TabsTrigger>
+            <TabsTrigger value="details">詳細</TabsTrigger>
           </TabsList>
 
           <TabsContent value="content" className="mt-6">
@@ -416,7 +417,7 @@ export function SourceDetailContent({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   {isYouTubeUrl && <Youtube className="h-5 w-5" />}
-                  Content
+                  コンテンツ
                 </CardTitle>
                 {source.asset?.url && !isYouTubeUrl && (
                   <CardDescription className="flex items-center gap-2">
@@ -438,7 +439,7 @@ export function SourceDetailContent({
                     <div className="aspect-video rounded-lg overflow-hidden bg-black">
                       <iframe
                         src={`https://www.youtube.com/embed/${youTubeVideoId}`}
-                        title="YouTube video"
+                        title="YouTube 動画"
                         className="w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -453,7 +454,7 @@ export function SourceDetailContent({
                           className="text-sm text-muted-foreground hover:underline inline-flex items-center gap-1"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          Open on YouTube
+                          YouTube で開く
                         </a>
                       </div>
                     )}
@@ -471,7 +472,7 @@ export function SourceDetailContent({
                       li: ({ children }) => <li className="mb-1">{children}</li>,
                     }}
                   >
-                    {source.full_text || 'No content available'}
+                    {source.full_text || 'コンテンツがありません'}
                   </ReactMarkdown>
                 </div>
               </CardContent>
@@ -484,12 +485,12 @@ export function SourceDetailContent({
                 <CardTitle className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <Lightbulb className="h-5 w-5" />
-                    Insights
+                    インサイト
                   </span>
                   <Badge variant="secondary">{insights.length}</Badge>
                 </CardTitle>
                 <CardDescription>
-                  AI-generated insights about this source
+                  このソースに関する AI 生成のインサイト
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -497,7 +498,7 @@ export function SourceDetailContent({
                 <div className="rounded-lg border bg-muted/30 p-4">
                   <h3 className="mb-3 text-sm font-semibold flex items-center gap-2">
                     <Sparkles className="h-4 w-4" />
-                    Generate New Insight
+                    新しいインサイトを生成
                   </h3>
                   <div className="flex gap-2">
                     <Select
@@ -506,7 +507,7 @@ export function SourceDetailContent({
                       disabled={creatingInsight}
                     >
                       <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="Select a transformation..." />
+                        <SelectValue placeholder="変換を選択..." />
                       </SelectTrigger>
                       <SelectContent>
                         {transformations.map((trans) => (
@@ -524,12 +525,12 @@ export function SourceDetailContent({
                       {creatingInsight ? (
                         <>
                           <LoadingSpinner className="mr-2 h-3 w-3" />
-                          Creating...
+                          生成中...
                         </>
                       ) : (
                         <>
                           <Plus className="mr-2 h-4 w-4" />
-                          Create
+                          作成
                         </>
                       )}
                     </Button>
@@ -544,8 +545,8 @@ export function SourceDetailContent({
                 ) : insights.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <Lightbulb className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                    <p className="text-sm">No insights yet</p>
-                    <p className="text-xs mt-1">Create your first insight using a transformation above</p>
+                    <p className="text-sm">まだインサイトがありません</p>
+                    <p className="text-xs mt-1">上の変換からインサイトを作成してください</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -563,7 +564,7 @@ export function SourceDetailContent({
                         </p>
                         <div className="mt-3 flex justify-end">
                           <Button size="sm" variant="outline" onClick={() => setSelectedInsight(insight)}>
-                            View Insight
+                            インサイトを表示
                           </Button>
                         </div>
                       </div>
@@ -577,7 +578,7 @@ export function SourceDetailContent({
           <TabsContent value="details" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Details</CardTitle>
+                <CardTitle>詳細</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Embedding Alert */}
@@ -585,10 +586,10 @@ export function SourceDetailContent({
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>
-                      Content Not Embedded
+                      コンテンツが埋め込まれていません
                     </AlertTitle>
                     <AlertDescription>
-                      This content hasn&apos;t been embedded for vector search. Embedding enables advanced search capabilities and better content discovery.
+                      このコンテンツはベクター検索用に埋め込まれていません。埋め込むと高度な検索と発見が可能になります。
                       <div className="mt-3">
                         <Button
                           onClick={handleEmbedContent}
@@ -596,7 +597,7 @@ export function SourceDetailContent({
                           size="sm"
                         >
                           <Database className="mr-2 h-4 w-4" />
-                          {isEmbedding ? 'Embedding...' : 'Embed Content'}
+                          {isEmbedding ? '埋め込み中...' : 'コンテンツを埋め込む'}
                         </Button>
                       </div>
                     </AlertDescription>
@@ -636,7 +637,7 @@ export function SourceDetailContent({
 
                   {source.asset?.file_path && (
                     <div className="space-y-2">
-                      <h3 className="text-sm font-semibold">Uploaded File</h3>
+                      <h3 className="text-sm font-semibold">アップロード済みファイル</h3>
                       <div className="flex flex-wrap items-center gap-2">
                         <code className="rounded bg-muted px-2 py-1 text-sm">
                           {source.asset.file_path}
@@ -649,16 +650,15 @@ export function SourceDetailContent({
                         >
                           <Download className="mr-2 h-4 w-4" />
                           {fileAvailable === false
-                            ? 'Unavailable'
+                            ? '利用不可'
                             : isDownloadingFile
-                              ? 'Preparing…'
-                              : 'Download'}
-                        </Button>
+                              ? '準備中...'
+                              : 'ダウンロード'}
+                      </Button>
                       </div>
                       {fileAvailable === false ? (
                         <p className="text-xs text-muted-foreground">
-                          Original file is no longer available on the server (likely removed after
-                          processing). Upload it again if you need a fresh copy.
+                          元ファイルがサーバーに残っていません（処理後に削除された可能性があります）。新しいコピーが必要な場合は再アップロードしてください。
                         </p>
                       ) : null}
                     </div>
@@ -666,7 +666,7 @@ export function SourceDetailContent({
 
                   {source.topics && source.topics.length > 0 && (
                     <div>
-                      <h3 className="mb-2 text-sm font-semibold">Topics</h3>
+                      <h3 className="mb-2 text-sm font-semibold">トピック</h3>
                       <div className="flex flex-wrap gap-2">
                         {source.topics.map((topic, idx) => (
                           <Badge key={idx} variant="outline">
@@ -681,28 +681,28 @@ export function SourceDetailContent({
                 {/* Metadata */}
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-semibold">Metadata</h3>
+                    <h3 className="text-sm font-semibold">メタデータ</h3>
                     <div className="flex items-center gap-2">
                       <Database className="h-3.5 w-3.5 text-muted-foreground" />
                       <Badge variant={source.embedded ? "default" : "secondary"} className="text-xs">
-                        {source.embedded ? "Embedded" : "Not Embedded"}
+                        {source.embedded ? "埋め込み済み" : "未埋め込み"}
                       </Badge>
                     </div>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground">Created</p>
+                      <p className="text-xs font-medium text-muted-foreground">作成</p>
                       <p className="text-sm">
-                        {formatDistanceToNow(new Date(source.created), { addSuffix: true })}
+                        {formatDistanceToNow(new Date(source.created), { addSuffix: true, locale: ja })}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {new Date(source.created).toLocaleString()}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground">Updated</p>
+                      <p className="text-xs font-medium text-muted-foreground">更新</p>
                       <p className="text-sm">
-                        {formatDistanceToNow(new Date(source.updated), { addSuffix: true })}
+                        {formatDistanceToNow(new Date(source.updated), { addSuffix: true, locale: ja })}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {new Date(source.updated).toLocaleString()}

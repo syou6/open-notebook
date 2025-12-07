@@ -8,6 +8,7 @@ import { Archive, ArchiveRestore, Trash2 } from 'lucide-react'
 import { useUpdateNotebook, useDeleteNotebook } from '@/lib/hooks/use-notebooks'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 import { formatDistanceToNow } from 'date-fns'
+import { ja } from 'date-fns/locale'
 import { InlineEdit } from '@/components/common/InlineEdit'
 
 interface NotebookHeaderProps {
@@ -61,10 +62,10 @@ export function NotebookHeader({ notebook }: NotebookHeaderProps) {
                 onSave={handleUpdateName}
                 className="text-2xl font-bold"
                 inputClassName="text-2xl font-bold"
-                placeholder="Notebook name"
+                placeholder="ノートブック名"
               />
               {notebook.archived && (
-                <Badge variant="secondary">Archived</Badge>
+                <Badge variant="secondary">アーカイブ</Badge>
               )}
             </div>
             <div className="flex gap-2">
@@ -76,12 +77,12 @@ export function NotebookHeader({ notebook }: NotebookHeaderProps) {
                 {notebook.archived ? (
                   <>
                     <ArchiveRestore className="h-4 w-4 mr-2" />
-                    Unarchive
+                    アーカイブ解除
                   </>
                 ) : (
                   <>
                     <Archive className="h-4 w-4 mr-2" />
-                    Archive
+                    アーカイブ
                   </>
                 )}
               </Button>
@@ -92,7 +93,7 @@ export function NotebookHeader({ notebook }: NotebookHeaderProps) {
                 className="text-red-600 hover:text-red-700"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Delete
+                削除
               </Button>
             </div>
           </div>
@@ -102,14 +103,14 @@ export function NotebookHeader({ notebook }: NotebookHeaderProps) {
             onSave={handleUpdateDescription}
             className="text-muted-foreground"
             inputClassName="text-muted-foreground"
-            placeholder="Add a description..."
+            placeholder="説明を追加..."
             multiline
-            emptyText="Add a description..."
+            emptyText="説明を追加..."
           />
           
           <div className="text-sm text-muted-foreground">
-            Created {formatDistanceToNow(new Date(notebook.created), { addSuffix: true })} • 
-            Updated {formatDistanceToNow(new Date(notebook.updated), { addSuffix: true })}
+            作成 {formatDistanceToNow(new Date(notebook.created), { addSuffix: true, locale: ja })} ・ 
+            更新 {formatDistanceToNow(new Date(notebook.updated), { addSuffix: true, locale: ja })}
           </div>
         </div>
       </div>
@@ -117,9 +118,9 @@ export function NotebookHeader({ notebook }: NotebookHeaderProps) {
       <ConfirmDialog
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
-        title="Delete Notebook"
-        description={`Are you sure you want to delete "${notebook.name}"? This action cannot be undone and will delete all sources, notes, and chat sessions.`}
-        confirmText="Delete Forever"
+        title="ノートブックを削除"
+        description={`"${notebook.name}" を削除しますか？この操作は取り消せず、関連するソース・ノート・チャット履歴も削除されます。`}
+        confirmText="完全に削除"
         confirmVariant="destructive"
         onConfirm={handleDelete}
       />

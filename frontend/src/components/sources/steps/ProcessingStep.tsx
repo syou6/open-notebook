@@ -45,21 +45,21 @@ export function ProcessingStep({
   return (
     <div className="space-y-8">
       <FormSection
-        title="Transformations (optional)"
-        description="Apply AI transformations to analyze and extract insights from your content."
+        title="変換 (任意)"
+        description="AI の変換を適用してコンテンツを解析し、インサイトを抽出します。"
       >
         <CheckboxList
           items={transformationItems}
           selectedIds={selectedTransformations}
           onToggle={onToggleTransformation}
           loading={loading}
-          emptyMessage="No transformations found."
+          emptyMessage="変換が見つかりません。"
         />
       </FormSection>
 
       <FormSection
-        title="Processing Settings"
-        description="Configure how your source will be processed and stored."
+        title="処理設定"
+        description="ソースの処理・保存方法を設定します。"
       >
         <div className="space-y-4">
           {settings?.default_embedding_option === 'ask' && (
@@ -74,9 +74,9 @@ export function ProcessingStep({
                     className="mt-0.5"
                   />
                   <div className="flex-1">
-                    <span className="text-sm font-medium block">Enable embedding for search</span>
+                    <span className="text-sm font-medium block">検索用に埋め込みを有効にする</span>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Allows this source to be found in vector searches and AI queries
+                      ベクター検索や AI クエリでこのソースを見つけられるようにします
                     </p>
                   </div>
                 </label>
@@ -89,10 +89,10 @@ export function ProcessingStep({
               <div className="flex items-start gap-3">
                 <div className="w-4 h-4 bg-primary rounded-full mt-0.5 flex-shrink-0"></div>
                 <div className="flex-1">
-                  <span className="text-sm font-medium block text-primary">Embedding enabled automatically</span>
+                  <span className="text-sm font-medium block text-primary">埋め込みが自動で有効</span>
                   <p className="text-xs text-primary mt-1">
-                    Your settings are configured to always embed content for vector search.
-                    You can change this in <span className="font-medium">Settings</span>.
+                    設定により、ベクター検索のため常に埋め込みが実行されます。
+                    変更する場合は<span className="font-medium">設定</span>で調整してください。
                   </p>
                 </div>
               </div>
@@ -104,10 +104,10 @@ export function ProcessingStep({
               <div className="flex items-start gap-3">
                 <div className="w-4 h-4 bg-muted-foreground rounded-full mt-0.5 flex-shrink-0"></div>
                 <div className="flex-1">
-                  <span className="text-sm font-medium block text-foreground">Embedding disabled</span>
+                  <span className="text-sm font-medium block text-foreground">埋め込みは無効</span>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Your settings are configured to skip embedding. Vector search won&apos;t be available for this source.
-                    You can change this in <span className="font-medium">Settings</span>.
+                    設定により埋め込みを実行しません。このソースではベクター検索が利用できません。
+                    変更する場合は<span className="font-medium">設定</span>で調整してください。
                   </p>
                 </div>
               </div>

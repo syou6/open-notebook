@@ -51,7 +51,7 @@ const createSourceSchema = z.object({
   }
   return true
 }, {
-  message: 'Please provide the required content for the selected source type',
+  message: '選択したソース種別に必要な内容を入力してください',
   path: ['type'],
 }).refine((data) => {
   // Make title mandatory for text sources
@@ -60,7 +60,7 @@ const createSourceSchema = z.object({
   }
   return true
 }, {
-  message: 'Title is required for text sources',
+  message: 'テキストソースにはタイトルが必須です',
   path: ['title'],
 })
 
@@ -73,9 +73,9 @@ interface AddSourceDialogProps {
 }
 
 const WIZARD_STEPS: readonly WizardStep[] = [
-  { number: 1, title: 'Source & Content', description: 'Choose type and add content' },
-  { number: 2, title: 'Organization', description: 'Select notebooks' },
-  { number: 3, title: 'Processing', description: 'Choose transformations and options' },
+  { number: 1, title: 'ソースと内容', description: '種類を選び、内容を追加' },
+  { number: 2, title: '整理', description: 'ノートブックを選択' },
+  { number: 3, title: '処理設定', description: '変換とオプションを選択' },
 ]
 
 interface ProcessingState {
@@ -385,29 +385,29 @@ export function AddSourceDialog({
 
       if (isBatchMode) {
         // Batch submission
-        setProcessingStatus({ message: `Processing ${itemCount} sources...` })
+        setProcessingStatus({ message: `${itemCount}件のソースを処理中...` })
         const results = await submitBatch(data)
 
         // Show summary toast
         if (results.failed === 0) {
-          toast.success(`${results.success} source${results.success !== 1 ? 's' : ''} created successfully`)
+          toast.success(`${results.success}件のソースを作成しました`)
         } else if (results.success === 0) {
-          toast.error(`Failed to create all ${results.failed} sources`)
+          toast.error(`${results.failed}件のソース作成に失敗しました`)
         } else {
-          toast.warning(`${results.success} succeeded, ${results.failed} failed`)
+          toast.warning(`${results.success}件成功、${results.failed}件失敗`)
         }
 
         handleClose()
       } else {
         // Single source submission
-        setProcessingStatus({ message: 'Submitting source for processing...' })
+        setProcessingStatus({ message: 'ソースを処理に送信しています...' })
         await submitSingleSource(data)
         handleClose()
       }
     } catch (error) {
       console.error('Error creating source:', error)
       setProcessingStatus({
-        message: 'Error creating source. Please try again.',
+        message: 'ソースの作成でエラーが発生しました。もう一度お試しください。',
       })
       timeoutRef.current = setTimeout(() => {
         setProcessing(false)
@@ -457,12 +457,12 @@ export function AddSourceDialog({
         <DialogContent className="sm:max-w-[500px]" showCloseButton={true}>
           <DialogHeader>
             <DialogTitle>
-              {batchProgress ? 'Processing Batch' : 'Processing Source'}
+              {batchProgress ? 'バッチを処理中' : 'ソースを処理中'}
             </DialogTitle>
             <DialogDescription>
               {batchProgress
-                ? `Processing ${batchProgress.total} sources. This may take a few moments.`
-                : 'Your source is being processed. This may take a few moments.'
+                ? `${batchProgress.total} 件のソースを処理しています。少し時間がかかる場合があります。`
+                : 'ソースを処理しています。少し時間がかかる場合があります。'
               }
             </DialogDescription>
           </DialogHeader>
@@ -471,7 +471,7 @@ export function AddSourceDialog({
             <div className="flex items-center gap-3">
               <LoaderIcon className="h-5 w-5 animate-spin text-primary" />
               <span className="text-sm text-muted-foreground">
-                {processingStatus?.message || 'Processing...'}
+                {processingStatus?.message || '処理中...'}
               </span>
             </div>
 
@@ -489,12 +489,12 @@ export function AddSourceDialog({
                   <div className="flex items-center gap-4">
                     <span className="flex items-center gap-1.5 text-green-600">
                       <CheckCircleIcon className="h-4 w-4" />
-                      {batchProgress.completed} completed
+                      {batchProgress.completed} 件完了
                     </span>
                     {batchProgress.failed > 0 && (
                       <span className="flex items-center gap-1.5 text-destructive">
                         <XCircleIcon className="h-4 w-4" />
-                        {batchProgress.failed} failed
+                        {batchProgress.failed} 件失敗
                       </span>
                     )}
                   </div>
@@ -505,7 +505,7 @@ export function AddSourceDialog({
 
                 {batchProgress.currentItem && (
                   <p className="text-xs text-muted-foreground truncate">
-                    Current: {batchProgress.currentItem}
+                    処理中: {batchProgress.currentItem}
                   </p>
                 )}
               </>
@@ -532,9 +532,9 @@ export function AddSourceDialog({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[700px] p-0">
         <DialogHeader className="px-6 pt-6 pb-0">
-          <DialogTitle>Add New Source</DialogTitle>
+          <DialogTitle>ソースを追加</DialogTitle>
           <DialogDescription>
-            Add content from links, uploads, or text to your notebooks.
+            リンク・アップロード・テキストからノートブックにコンテンツを追加します。
           </DialogDescription>
         </DialogHeader>
 
@@ -586,7 +586,7 @@ export function AddSourceDialog({
               variant="outline" 
               onClick={handleClose}
             >
-              Cancel
+              キャンセル
             </Button>
 
             <div className="flex gap-2">
@@ -596,7 +596,7 @@ export function AddSourceDialog({
                   variant="outline"
                   onClick={handlePrevStep}
                 >
-                  Back
+                  戻る
                 </Button>
               )}
 
@@ -608,7 +608,7 @@ export function AddSourceDialog({
                   onClick={(e) => handleNextStep(e)}
                   disabled={!currentStepValid}
                 >
-                  Next
+                  次へ
                 </Button>
               )}
 
@@ -618,7 +618,7 @@ export function AddSourceDialog({
                 disabled={!currentStepValid || createSource.isPending}
                 className="min-w-[120px]"
               >
-                {createSource.isPending ? 'Creating...' : 'Done'}
+                {createSource.isPending ? '作成中...' : '完了'}
               </Button>
             </div>
           </div>

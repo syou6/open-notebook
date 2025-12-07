@@ -57,7 +57,7 @@ export function SourcesColumn({
   // Collapsible column state
   const { sourcesCollapsed, toggleSources } = useNotebookColumnsStore()
   const collapseButton = useMemo(
-    () => createCollapseButton(toggleSources, 'Sources'),
+    () => createCollapseButton(toggleSources, 'ソース'),
     [toggleSources]
   )
   
@@ -118,29 +118,29 @@ export function SourcesColumn({
         isCollapsed={sourcesCollapsed}
         onToggle={toggleSources}
         collapsedIcon={FileText}
-        collapsedLabel="Sources"
+        collapsedLabel="ソース"
       >
         <Card className="h-full flex flex-col flex-1 overflow-hidden">
           <CardHeader className="pb-3 flex-shrink-0">
             <div className="flex items-center justify-between gap-2">
-              <CardTitle className="text-lg">Sources</CardTitle>
+              <CardTitle className="text-lg">ソース</CardTitle>
               <div className="flex items-center gap-2">
                 <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
                   <DropdownMenuTrigger asChild>
                     <Button size="sm">
                       <Plus className="h-4 w-4 mr-2" />
-                      Add Source
+                      ソースを追加
                       <ChevronDown className="h-4 w-4 ml-2" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => { setDropdownOpen(false); setAddDialogOpen(true); }}>
                       <Plus className="h-4 w-4 mr-2" />
-                      Add New Source
+                      新規ソースを追加
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => { setDropdownOpen(false); setAddExistingDialogOpen(true); }}>
                       <Link2 className="h-4 w-4 mr-2" />
-                      Add Existing Source
+                      既存のソースを追加
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -157,8 +157,8 @@ export function SourcesColumn({
             ) : !sources || sources.length === 0 ? (
               <EmptyState
                 icon={FileText}
-                title="No sources yet"
-                description="Add your first source to start building your knowledge base."
+                title="ソースがまだありません"
+                description="最初のソースを追加してナレッジベースを作り始めましょう。"
               />
             ) : (
               <div className="space-y-3">
@@ -201,9 +201,9 @@ export function SourcesColumn({
       <ConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        title="Delete Source"
-        description="Are you sure you want to delete this source? This action cannot be undone."
-        confirmText="Delete"
+        title="ソースを削除"
+        description="このソースを削除しますか？ この操作は取り消せません。"
+        confirmText="削除"
         onConfirm={handleDeleteConfirm}
         isLoading={deleteSource.isPending}
         confirmVariant="destructive"
@@ -212,9 +212,9 @@ export function SourcesColumn({
       <ConfirmDialog
         open={removeDialogOpen}
         onOpenChange={setRemoveDialogOpen}
-        title="Remove Source from Notebook"
-        description="Are you sure you want to remove this source from the notebook? The source itself will not be deleted."
-        confirmText="Remove"
+        title="ノートブックからソースを外す"
+        description="このソースをノートブックから外しますか？ ソース自体は削除されません。"
+        confirmText="外す"
         onConfirm={handleRemoveConfirm}
         isLoading={removeFromNotebook.isPending}
         confirmVariant="default"
